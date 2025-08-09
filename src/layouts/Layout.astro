@@ -2,7 +2,28 @@
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
-const {title, description} = Astro.props;
+import type {ImageMetadata} from 'astro';
+import {SITE_DESCRIPTION} from '../consts';
+
+interface Props {
+	title: string;
+	description?: string;
+	noIndex?: boolean;
+	ogType?: 'website' | 'article';
+	publishedTime?: string | Date;
+	modifiedTime?: string | Date;
+	image?: ImageMetadata;
+}
+
+const {
+	title,
+	description,
+	noIndex,
+	ogType,
+	publishedTime,
+	modifiedTime,
+	image,
+} = Astro.props as Props;
 ---
 
 <html lang='en'>
@@ -11,7 +32,12 @@ const {title, description} = Astro.props;
 		<meta name='viewport' content='width=device-width, initial-scale=1' />
 		<BaseHead
 			title={title}
-			description={description ?? 'A simple blog built with Astro'}
+			description={description ?? SITE_DESCRIPTION}
+			noIndex={noIndex}
+			ogType={ogType}
+			publishedTime={publishedTime}
+			modifiedTime={modifiedTime}
+			image={image}
 		/>
 	</head>
 	<body class='bg-gray-900 text-cyan-100 w-full flex flex-col items-center'>

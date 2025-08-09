@@ -1,0 +1,5 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+Sitemap: https://em4go.github.io/sitemap-index.xml
