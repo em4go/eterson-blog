@@ -13,6 +13,7 @@ interface Props {
 	publishedTime?: string | Date;
 	modifiedTime?: string | Date;
 	image?: ImageMetadata;
+	lang?: 'en' | 'es';
 }
 
 const {
@@ -23,10 +24,11 @@ const {
 	publishedTime,
 	modifiedTime,
 	image,
+	lang = 'en',
 } = Astro.props as Props;
 ---
 
-<html lang='en'>
+<html lang={lang}>
 	<head>
 		<meta charset='utf-8' />
 		<meta name='viewport' content='width=device-width, initial-scale=1' />

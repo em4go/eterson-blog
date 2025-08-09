@@ -1,0 +1,83 @@
+---
+import {type CollectionEntry, getCollection, render} from 'astro:content';
+import BlogPost from '../../../layouts/BlogPost.astro';
+
+type Post = CollectionEntry<'blog'>;
+
+export async function getStaticPaths() {
+	const posts = await getCollection('blog');
+	// Group posts by canonical key
+	const groups = new Map<string, Post[]>();
+	for (const p of posts) {
+		const key = p.data.canonicalSlug ?? p.id;
+		const arr = groups.get(key) ?? [];
+		arr.push(p);
+		groups.set(key, arr);
+	}
+	const paths: Array<{
+		params: {lang: 'en' | 'es'; canonical: string};
+		props: any;
+	}> = [];
+	for (const [canonical, arr] of groups) {
+		for (const p of arr) {
+			const lang = p.data.lang ?? 'en';
+			// Compute neighbors within same language by published date across entire collection
+			const sameLang = posts
+				.filter((q) => (q.data.lang ?? 'en') === lang)
+				.sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf());
+			const idx = sameLang.findIndex(
+				(q) => (q.data.canonicalSlug ?? q.id) === (p.data.canonicalSlug ?? p.id)
+			);
+			const prev = idx > 0 ? sameLang[idx - 1] : null;
+			const next =
+				idx >= 0 && idx < sameLang.length - 1 ? sameLang[idx + 1] : null;
+
+			const alternates = arr
+				.sort((a, b) =>
+					(a.data.lang ?? 'en').localeCompare(b.data.lang ?? 'en')
+				)
+				.map((q) => ({
+					lang: (q.data.lang ?? 'en') as 'en' | 'es',
+					href: `/blog/${q.data.lang ?? 'en'}/${q.data.canonicalSlug ?? q.id}/`,
+				}));
+
+			paths.push({
+				params: {lang: lang as 'en' | 'es', canonical},
+				props: {
+					post: p,
+					prevHref: prev
+						? `/blog/${lang}/${prev.data.canonicalSlug ?? prev.id}/`
+						: null,
+					nextHref: next
+						? `/blog/${lang}/${next.data.canonicalSlug ?? next.id}/`
+						: null,
+					alternates,
+				},
+			});
+		}
+	}
+	return paths;
+}
+
+const {post, prevHref, nextHref, alternates} = Astro.props as any;
+const {Content} = await render(post);
+
+// Tiny helper to estimate reading time (~200wpm)
+const getReadingTime = (content?: string) => {
+	const words = content?.trim().split(/\s+/).length ?? 0;
+	const minutes = Math.max(1, Math.round(words / 200));
+	return `${minutes} min read`;
+};
+const readTime = getReadingTime(post.body);
+---
+
+<BlogPost
+	{...post.data}
+	prevHref={prevHref}
+	nextHref={nextHref}
+	readTime={readTime}
+	lang={post.data.lang}
+	alternates={alternates}
+>
+	<Content />
+</BlogPost>

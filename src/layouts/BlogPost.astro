@@ -16,10 +16,14 @@ const {
 	prevHref,
 	nextHref,
 	readTime,
+	lang = 'en',
+	alternates,
 } = Astro.props as DataProps & {
 	prevHref?: string | null;
 	nextHref?: string | null;
 	readTime?: string;
+	lang?: 'en' | 'es';
+	alternates?: Array<{lang: 'en' | 'es'; href: string}>;
 };
 ---
 
@@ -30,6 +34,7 @@ const {
 	publishedTime={pubDate}
 	modifiedTime={updatedDate}
 	image={heroImage}
+	lang={lang}
 >
 	<!-- Top nav area consistent with home -->
 	<div class='w-full bg-gray-900 px-4 sm:px-6 md:px-8'>
@@ -67,6 +72,23 @@ const {
 			</header>
 
 			{
+				alternates && alternates.length > 1 && (
+					<div class='mt-4 flex gap-3 text-xs sm:text-sm uppercase tracking-widest'>
+						<span class='opacity-70'>Read in:</span>
+						{alternates.map((alt) => (
+							<a
+								href={alt.href}
+								class={`underline decoration-dotted underline-offset-4 ${alt.lang === lang ? 'text-cyan-200' : 'text-cyan-300 hover:text-cyan-200'}`}
+								aria-current={alt.lang === lang ? 'page' : undefined}
+							>
+								{alt.lang === 'en' ? 'English' : 'Español'}
+							</a>
+						))}
+					</div>
+				)
+			}
+
+			{
 				heroImage && (
 					<div class='mt-8'>
 						<Image
@@ -101,7 +123,7 @@ const {
 				</div>
 				<div class='justify-self-center'>
 					<a
-						href='/blog'
+						href={`/blog/${lang}/`}
 						class='text-cyan-300 hover:text-cyan-200 underline decoration-dotted underline-offset-4'
 					>
 						Back to blog
