@@ -1,8 +1,13 @@
 ---
 import ProjectCard from './ProjectCard.astro';
-import Img1 from '../assets/blog-placeholder-1.jpg';
-import Img2 from '../assets/blog-placeholder-2.jpg';
-import Img3 from '../assets/blog-placeholder-3.jpg';
+// Project preview images
+import ImgTourism from '../assets/projects-preview/vis_project.webp';
+import ImgMetro from '../assets/projects-preview/metro_project.webp';
+import ImgNaics from '../assets/projects-preview/naics_project.webp';
+import ImgMovies from '../assets/projects-preview/filmanin.webp';
+import ImgPoke from '../assets/projects-preview/preview_pokecard_detector.webp';
+import ImgU18 from '../assets/projects-preview/rank_u18_analysis.webp';
+import ImgCalitimer from '../assets/projects-preview/calitimer.webp';
 ---
 
 <section
@@ -17,41 +22,80 @@ import Img3 from '../assets/blog-placeholder-3.jpg';
 			>
 				Projects
 			</h2>
-			<p class='mt-2 text-cyan-100/80 max-w-prose'>
-				A few highlights spanning ML optimization, full‑stack apps, and data
-				engineering.
+			<p class='mt-2 text-cyan-100 py-4'>
+				Selected work across data, ML, and apps — practical builds that ship.
 			</p>
 		</header>
 
 		<div class='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8'>
 			<ProjectCard
-				title='QUANTUMFLOW'
-				subtitle='ML Optimization'
-				description='A library for optimizing neural network inference on low‑power devices.'
-				image={Img1}
-				ctaLabel='View case study'
+				title='Tourism interactive dashboard'
+				subtitle='Data visualization'
+				description='Interactive dashboard exploring tourism metrics with rich charts and filters.'
+				image={ImgTourism}
+				ctaLabel='View project'
 				ctaHref='#'
-				accent='purple'
+				accent='emerald'
 			/>
 
 			<ProjectCard
-				title='SYNTH‑AI'
-				subtitle='Full‑Stack App'
-				description='Web platform for generating synthetic tabular data for robust model training.'
-				image={Img2}
-				ctaLabel='Live demo'
+				title='Valencia transport analysis'
+				subtitle='Urban mobility analytics'
+				description='Exploratory data analysis and visualization of Valencia’s transport network.'
+				image={ImgMetro}
+				ctaLabel='View project'
 				ctaHref='#'
 				accent='cyan'
 			/>
 
 			<ProjectCard
-				title='PREDICTIVE‑ETL'
-				subtitle='Data Engineering'
-				description='Scalable data pipeline for real‑time customer churn prediction.'
-				image={Img3}
-				ctaLabel='View case study'
+				title='Business description classification'
+				subtitle='NLP classification'
+				description='Model that classifies company descriptions into industry/NAICS categories.'
+				image={ImgNaics}
+				ctaLabel='View project'
+				ctaHref='#'
+				accent='purple'
+			/>
+
+			<ProjectCard
+				title='Movie recommendation web'
+				subtitle='Recommender system'
+				description='Web app that recommends movies based on user preferences and ratings.'
+				image={ImgMovies}
+				ctaLabel='View project'
 				ctaHref='#'
 				accent='violet'
+			/>
+
+			<ProjectCard
+				title='PokeCard TCG detector'
+				subtitle='Computer vision'
+				description='Real‑time detection of Pokémon TCG cards using a custom vision pipeline.'
+				image={ImgPoke}
+				ctaLabel='View project'
+				ctaHref='#'
+				accent='emerald'
+			/>
+
+			<ProjectCard
+				title='Under‑18 athletics ranking analysis'
+				subtitle='Sports analytics'
+				description='Analysis and ranking of U‑18 athletics performances with visual insights.'
+				image={ImgU18}
+				ctaLabel='View project'
+				ctaHref='#'
+				accent='violet'
+			/>
+
+			<ProjectCard
+				title='Workout timer app'
+				subtitle='Full‑stack app'
+				description='Interval and workout timer application designed for simple daily routines.'
+				image={ImgCalitimer}
+				ctaLabel='View project'
+				ctaHref='#'
+				accent='cyan'
 			/>
 		</div>
 	</div>
