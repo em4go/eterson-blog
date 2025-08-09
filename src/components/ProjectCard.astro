@@ -8,9 +8,13 @@ interface Props {
 	image?: string | ImageMetadata;
 	ctaLabel?: string;
 	ctaHref?: string;
+	// Optional list of small tech tags/badges
+	tags?: string[];
 	secondaryLabel?: string;
 	secondaryHref?: string;
 	accent?: 'purple' | 'cyan' | 'violet' | 'emerald';
+	// If true, CTA opens in a new tab
+	isExternal?: boolean;
 }
 
 const {
@@ -20,9 +24,11 @@ const {
 	image,
 	ctaLabel = 'View case study',
 	ctaHref = '#',
+	tags,
 	secondaryLabel,
 	secondaryHref,
 	accent = 'purple',
+	isExternal = false,
 } = Astro.props as Props;
 
 const stylesByAccent = {
@@ -82,6 +88,21 @@ const s = stylesByAccent[accent];
 		<p class='mt-4 text-cyan-100/90'>
 			{description}
 		</p>
+		{
+			Boolean(tags?.length) && (
+				<ul class='mt-4 flex flex-wrap gap-2'>
+					{tags!.map((t) => (
+						<li>
+							<span
+								class={`text-xs px-2 py-1 border ${s.border} ${s.text} bg-gray-900/40`}
+							>
+								{t}
+							</span>
+						</li>
+					))}
+				</ul>
+			)
+		}
 	</div>
 
 	<div class='mt-6 flex flex-wrap gap-3'>
@@ -89,6 +110,8 @@ const s = stylesByAccent[accent];
 			ctaHref && (
 				<a
 					href={ctaHref}
+					target={isExternal ? '_blank' : undefined}
+					rel={isExternal ? 'noopener noreferrer' : undefined}
 					class={`inline-flex items-center gap-2.5 px-4 py-2 ${s.text} border-2 ${s.border} rounded-none shadow-[6px_6px_0_0] ${s.shadow} transition duration-75 hover:opacity-80`}
 				>
 					{ctaLabel}
