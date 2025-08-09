@@ -1,68 +1,79 @@
-# Astro Starter Kit: Blog
+# eterson-blog
 
-```sh
-pnpm create astro@latest -- --template blog
-```
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/blog)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/blog)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/blog/devcontainer.json)
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-![blog](https://github.com/withastro/astro/assets/2244813/ff10799f-a816-4703-b967-c78997e8323d)
+Personal blog and portfolio built with Astro. It includes a blog (Markdown/MDX), projects section, About page and timeline, RSS, sitemap, and SEO-ready head tags.
 
 Features:
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+- Fast, static Astro site with TypeScript
+- Blog posts in Markdown and MDX (`src/content/blog`)
+- SEO/OpenGraph via `BaseHead.astro`
+- RSS feed at `/rss.xml` and sitemap support
+- Projects gallery and timeline components
+- Accessible typography (Atkinson Hyperlegible) and light/dark favicons
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+## Project structure
 
 ```text
 ├── public/
+│   └── fonts/ (Atkinson bold/regular)
 ├── src/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
+│   ├── assets/            # images, favicons, project previews
+│   ├── components/        # Header, Footer, ProjectsSection, AboutMeTimeline, etc.
+│   ├── content/
+│   │   └── blog/          # your .md / .mdx posts
+│   ├── layouts/           # Layout.astro, BlogPost.astro
+│   └── pages/             # routes: /, /about, /blog, /rss.xml
 ├── astro.config.mjs
-├── README.md
 ├── package.json
 └── tsconfig.json
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Getting started
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Prerequisites: Node.js 18+ and pnpm.
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+Common tasks:
 
-Any static assets, like images, can be placed in the `public/` directory.
+- Install: `pnpm install`
+- Dev server: `pnpm dev` (<http://localhost:4321>)
+- Build: `pnpm build` (outputs to `dist/`)
+- Preview build: `pnpm preview`
+- Astro CLI: `pnpm astro <command>` (e.g. `pnpm astro check`)
 
-## 🧞 Commands
+## Writing posts
 
-All commands are run from the root of the project, from a terminal:
+- Add a new post in `src/content/blog/` using `.md` or `.mdx`.
+- Recommended frontmatter (fields may be optional based on the collection schema):
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+```md
+---
+title: "My first post"
+description: "Short summary for social and SEO"
+pubDate: 2025-08-09
+updatedDate: 2025-08-10
+tags: [astro, blog]
+heroImage: "../assets/blog-placeholder-1.jpg" # optional
+---
 
-## 👀 Want to learn more?
+Your content here...
+```
 
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- Posts are listed at `/blog`. Individual posts use `BlogPost.astro` layout.
 
-## Credit
+## Customization
 
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+- Site metadata: set `site` and integrations in `astro.config.mjs`.
+- Head tags and SEO: edit `src/components/BaseHead.astro`.
+- Navigation/header/footer: `src/components/Header.astro`, `Nav.astro`, `Footer.astro`.
+- Projects grid: `src/components/ProjectsSection.astro` (images under `src/assets/projects-preview/`).
+- Timeline/About: `src/components/AboutMeTimeline.astro`, page at `src/pages/about.astro`.
+- Home page: `src/pages/index.astro`.
+- RSS: `src/pages/rss.xml.js` generates `/rss.xml`.
+
+## Deployment
+
+This is a static site. After `pnpm build`, deploy the `dist/` directory to any static host (Vercel, Netlify, GitHub Pages, Cloudflare Pages, etc.).
+
+## Acknowledgements
+
+Based on the official Astro Blog Starter and inspired by Bear Blog aesthetics.
