@@ -1,0 +1,58 @@
+---
+import ProjectCard from './ProjectCard.astro';
+import Img1 from '../assets/blog-placeholder-1.jpg';
+import Img2 from '../assets/blog-placeholder-2.jpg';
+import Img3 from '../assets/blog-placeholder-3.jpg';
+---
+
+<section
+	id='projects'
+	class='w-full bg-gray-900 py-10 sm:py-12 md:py-16 lg:py-16 xl:py-20 px-4 sm:px-6 md:px-8'
+>
+	<div class='max-w-7xl mx-auto'>
+		<header>
+			<h2
+				id='projects-title'
+				class='text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-space-grotesk font-black text-cyan-300 text-left mb-4 sm:mb-6 md:mb-8 lg:mb-10 xl:mb-12 uppercase tracking-tighter leading-tight drop-shadow-sm'
+			>
+				Projects
+			</h2>
+			<p class='mt-2 text-cyan-100/80 max-w-prose'>
+				A few highlights spanning ML optimization, full‑stack apps, and data
+				engineering.
+			</p>
+		</header>
+
+		<div class='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8'>
+			<ProjectCard
+				title='QUANTUMFLOW'
+				subtitle='ML Optimization'
+				description='A library for optimizing neural network inference on low‑power devices.'
+				image={Img1}
+				ctaLabel='View case study'
+				ctaHref='#'
+				accent='purple'
+			/>
+
+			<ProjectCard
+				title='SYNTH‑AI'
+				subtitle='Full‑Stack App'
+				description='Web platform for generating synthetic tabular data for robust model training.'
+				image={Img2}
+				ctaLabel='Live demo'
+				ctaHref='#'
+				accent='cyan'
+			/>
+
+			<ProjectCard
+				title='PREDICTIVE‑ETL'
+				subtitle='Data Engineering'
+				description='Scalable data pipeline for real‑time customer churn prediction.'
+				image={Img3}
+				ctaLabel='View case study'
+				ctaHref='#'
+				accent='violet'
+			/>
+		</div>
+	</div>
+</section>

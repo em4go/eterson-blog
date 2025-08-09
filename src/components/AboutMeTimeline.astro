@@ -1,0 +1,140 @@
+---
+// AboutMeTimeline component - displays a chronological timeline of professional milestones
+// with highlighted text elements and personal photo
+
+// Import personal photo
+import ErnestoPhoto from '../assets/ernesto-about.png';
+
+// TypeScript interface for component props
+interface Props {
+  // No props needed - content will be static
+}
+
+// Timeline data structure
+interface TimelineEntry {
+  year: string;
+  description: string;
+  highlights: Array<{
+    text: string;
+    color: string;
+  }>;
+}
+
+// Utility function to apply text highlighting with improved accessibility and contrast
+function highlightText(text: string, highlights: Array<{text: string; color: string}>): string {
+  let highlightedText = text;
+  
+  // Sort highlights by length (longest first) to avoid partial replacements
+  const sortedHighlights = highlights.sort((a, b) => b.text.length - a.text.length);
+  
+  sortedHighlights.forEach(highlight => {
+    // Escape special regex characters in the highlight text
+    const escapedText = highlight.text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    // Create a case-insensitive regex to find the text
+    const regex = new RegExp(`(${escapedText})`, 'gi');
+    
+    // Replace with highlighted span with enhanced styling for better accessibility and contrast
+    highlightedText = highlightedText.replace(regex, (match) => {
+      return `<span class="${highlight.color} font-semibold bg-gray-800/50 px-2 py-1 rounded-md border-l-2 border-current shadow-sm">${match}</span>`;
+    });
+  });
+  
+  return highlightedText;
+}
+
+// Static timeline data based on requirements with improved accessibility colors and contrast ratios
+const timelineEntries: TimelineEntry[] = [
+  {
+    year: "2020",
+    description: "Started programming in Python as a self-taught developer.",
+    highlights: [
+      { text: "self-taught", color: "text-rose-200" }
+    ]
+  },
+  {
+    year: "2022", 
+    description: "Enrolled in BSc Data Science at Polytechnic University of Valencia",
+    highlights: [
+      { text: "Polytechnic University of Valencia", color: "text-purple-200" }
+    ]
+  },
+  {
+    year: "2023",
+    description: "Co-founded Sigma Data Club at UPV. Led development and analytics, growing a hands-on AI community.",
+    highlights: [
+      { text: "hands-on AI community", color: "text-emerald-200" }
+    ]
+  },
+  {
+    year: "2025",
+    description: "Joined Easihp, a logistics startup, as a Data Scientist intern. Solved real-world routing and optimization problems.",
+    highlights: [
+      { text: "Data Scientist intern", color: "text-sky-200" }
+    ]
+  }
+];
+---
+
+<!-- About Me Timeline Section with enhanced accessibility and consistent styling -->
+<section class="w-full bg-gray-900 py-10 sm:py-12 md:py-16 lg:py-16 xl:py-20 px-4 sm:px-6 md:px-8" aria-labelledby="about-me-title">
+  <div class="max-w-7xl mx-auto">
+    <!-- Section Title with improved accessibility and consistent typography -->
+  <h2 id="about-me-title" class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-space-grotesk font-black text-cyan-300 text-left mb-4 sm:mb-6 md:mb-8 lg:mb-10 xl:mb-12 uppercase tracking-tighter leading-tight drop-shadow-sm">
+      About Me
+    </h2>
+    
+    <!-- Timeline Container - Enhanced Responsive Layout with improved spacing -->
+    <!-- Mobile: Stacked vertically, Tablet: Optimized spacing, Desktop: Two-column layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 sm:gap-16 md:gap-20 lg:gap-16 xl:gap-20 items-start">
+      <!-- Timeline Content (Left Column on Desktop - 8 columns for better balance) -->
+      <div class="relative order-2 lg:order-1 lg:col-span-8">
+        <!-- Vertical Timeline Line - Connecting all entries with improved positioning and accessibility -->
+        <div class="absolute left-8 sm:left-9 md:left-10 lg:left-11 top-8 bottom-8 w-0.5 bg-gradient-to-b from-cyan-300/80 via-cyan-400 to-cyan-300/80 shadow-lg" aria-hidden="true"></div>
+        
+        <!-- Timeline Entries with improved semantic structure and spacing -->
+        <ol class="space-y-6 sm:space-y-8 md:space-y-10 lg:space-y-12" role="list" aria-label="Professional timeline">
+          {timelineEntries.map((entry) => (
+            <li class="relative flex items-start" role="listitem">
+              <!-- Year Marker with Star - Positioned over the timeline line -->
+              <div class="flex-shrink-0 flex items-center space-x-5 sm:space-x-6 md:space-x-7 bg-gray-900 pr-6 sm:pr-7 md:pr-8 z-10 relative">
+                <!-- Star/Asterisk Symbol with enhanced styling and accessibility -->
+                <div class="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 flex items-center justify-center" aria-hidden="true">
+                  <span class="text-cyan-300 text-2xl sm:text-3xl md:text-4xl font-bold leading-none drop-shadow-lg">*</span>
+                </div>
+                <!-- Year Display with improved typography and accessibility -->
+                <time datetime={entry.year} class="text-cyan-100 text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-bold font-space-grotesk tracking-tight min-w-[5rem] sm:min-w-[6rem] md:min-w-[7rem]">
+                  {entry.year}
+                </time>
+              </div>
+              
+              <!-- Timeline Content -->
+              <div class="flex-1 ml-6 sm:ml-7 md:ml-8 pb-4">
+                <!-- Timeline Entry Description with Highlighting and improved typography -->
+                <p class="text-cyan-100 font-ibm-plex-mono max-w-prose" set:html={highlightText(entry.description, entry.highlights)}>
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+      
+      <!-- Personal Photo (Right Column on Desktop - 4 columns for better balance) -->
+      <div class="flex justify-center lg:justify-start xl:justify-center order-1 lg:order-2 mb-12 sm:mb-16 md:mb-20 lg:mb-0 lg:col-span-4">
+        <!-- Responsive Photo Container with Enhanced Sizing and Accessibility -->
+        <div class="relative w-56 h-72 sm:w-64 sm:h-80 md:w-72 md:h-96 lg:w-80 lg:h-96 xl:w-96 xl:h-[30rem]">
+          <!-- Photo Container with Thin White Border -->
+          <div class="relative w-full h-full border-2 border-white transition-all duration-300 overflow-clip flex items-start justify-end">
+            <!-- Personal Photo with Enhanced Accessibility -->
+            <img
+              src={ErnestoPhoto.src}
+              alt="Portrait of Ernesto, data and AI developer, smiling and wearing professional attire"
+              class="w-full h-full object-cover object-center transform -translate-x-6 -translate-y-2/4 transition-all duration-500 scale-200 select-none pointer-events-none"
+              loading="lazy"
+              onerror="this.onerror=null;this.src='https://placehold.co/352x440/2dd4bf/ffffff?text=Ernesto';"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

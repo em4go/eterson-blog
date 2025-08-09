@@ -2,48 +2,131 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import {SITE_TITLE, SITE_DESCRIPTION} from '../consts';
+import Layout from '../layouts/Layout.astro';
+import ErnestoPhoto from '../assets/ernesto-photo.png';
+import AboutMeTimeline from '../components/AboutMeTimeline.astro';
+import ProjectsSection from '../components/ProjectsSection.astro';
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
-				template serves as a lightweight, minimally-styled starting point for anyone looking to build
-				a personal website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
-		</main>
-		<Footer />
-	</body>
-</html>
+<Layout title={SITE_TITLE}>
+	<div class='w-full bg-gray-900 px-4 sm:px-6 md:px-8'>
+		<div class='max-w-7xl mx-auto'>
+			<Header />
+		</div>
+	</div>
+	<main class='w-full'>
+		<div class='max-w-7xl mx-auto bg-gray-900'>
+			<div
+				class='grid grid-cols-1 md:grid-cols-2 gap-y-12 lg:gap-x-16 lg:gap-y-8 items-center'
+			>
+				<!-- Row 1: Title (Spanning 2 columns on large screens) -->
+				<div
+					class='md:col-span-2 flex flex-col lg:flex-row items-center justify-center gap-4'
+				>
+					<h1
+						class='w-fit max-w-10/12 mx-auto text-left text-7xl sm:text-8xl md:text-[7.5rem] lg:text-[10rem] xl:text-[12rem] font-space-grotesk font-black uppercase tracking-tighter leading-tight'
+					>
+						DATA AND AI DEVELOPER
+					</h1>
+				</div>
+
+				<!-- Row 2, Column 1: Image -->
+				<div
+					class='flex flex-row justify-center items-end w-full max-h-52 md:max-h-72 lg:max-h-80 h-full bg-gradient-to-bl from-[#74C2D0] to-[#737373]'
+				>
+					<img
+						src={ErnestoPhoto.src}
+						alt='Portrait of Ernesto, a data and AI developer'
+						class='object-cover h-[140%] sm:h-[150%] align-center transform inline select-none pointer-events-none'
+						onerror="this.onerror=null;this.src='https://placehold.co/400x500/2dd4bf/ffffff?text=Ernesto';"
+					/>
+				</div>
+
+				<!-- Row 2, Column 2: Text and Buttons -->
+				<div
+					class='space-y-8 px-8 text-center lg:text-left flex flex-col items-start w-full h-full'
+				>
+					<!-- Introduction Text -->
+					<p class='text-cyan-100 max-w-lg mx-auto lg:mx-0 text-left'>
+						Hi there, I'm Ernesto. <br />
+						I build data-driven products using ML, optimization, and software engineering
+						- always aiming for reproducibility, scalability, and business value.
+					</p>
+
+					<!-- Action Buttons -->
+					<div
+						class='flex md:flex-col flex-row lg:flex-row items-center justify-center lg:justify-start gap-7 pt-4 w-full'
+					>
+						<!-- View Projects Button -->
+						<a
+							href='#projects'
+							class='relative inline-flex items-center gap-2.5 px-6 py-3
+           text-purple-300 border-2 border-purple-400 font-medium rounded-none
+          shadow-[8px_8px_0_0_#7c3aed] hover:shadow-[4px_4px_0_0]
+          shadow-purple-400
+           transition duration-75 hover:bg-purple-400 hover:text-gray-900'
+						>
+							<!-- Icono flecha -->
+							<svg
+								xmlns='http://www.w3.org/2000/svg'
+								class='w-5 h-5'
+								fill='none'
+								stroke='currentColor'
+								stroke-width='2'
+								stroke-linecap='round'
+								stroke-linejoin='round'
+							>
+								<path d='M9 18l6-6-6-6'></path>
+							</svg>
+							View projects
+						</a>
+
+						<a
+							href='https://www.linkedin.com/in/ernestomg'
+							target='_blank'
+							class='relative inline-flex items-center gap-2.5 px-6 py-3 bg-purple-400
+                shadow-[8px_8px_0_0_#7c3aed] hover:shadow-[4px_4px_0_0]
+              shadow-purple-400
+            text-gray-900 border-2 border-purple-400 font-medium rounded-none
+            transition duration-75 hover:opacity-80'
+						>
+							<!-- Icono flecha -->
+							<svg
+								class='w-5 h-5 transform -translate-y-0.5'
+								viewBox='0 0 30 30'
+								fill='currentColor'
+								xmlns='http://www.w3.org/2000/svg'
+							>
+								<g clip-path='url(#clip0_86_5)'>
+									<path
+										fill-rule='evenodd'
+										clip-rule='evenodd'
+										d='M18.25 9.39564V10.5668C19.3799 9.86486 20.6843 9.45572 22.6663 9.45572C29.1171 9.45572 29.9429 14.2774 29.9429 18.4779V29.9343L22.4842 30V19.0428C22.4842 17.2035 21.8255 16.8544 20.6074 16.8544C19.4493 16.8544 18.7305 17.2203 18.7305 19.0428V30L11.1742 29.9343V9.39563L18.25 9.39564ZM7.5075 9.38327V29.9914H0V9.38328H7.5075V9.38327ZM5.63062 11.2601H1.87687V28.1145H5.63062V11.2602V11.2601ZM16.3731 11.2725H13.051V28.0743L16.8536 28.1081V19.0428C16.8536 15.5049 19.2053 14.9775 20.6074 14.9775C22.3191 14.9775 24.3611 15.6832 24.3611 19.0428V28.1081L28.0661 28.0743V18.4779C28.0661 13.2695 26.604 11.3326 22.6663 11.3326C20.2995 11.3326 19.2748 12.0345 18.2706 12.8791L18.0098 13.1006H16.3731V11.2725ZM3.75375 0C5.82395 0 7.5075 1.68356 7.5075 3.75375C7.5075 5.82395 5.82395 7.5075 3.75375 7.5075C1.68356 7.5075 0 5.82395 0 3.75375C0 1.68356 1.68356 0 3.75375 0ZM3.75375 1.87688C2.71959 1.87688 1.87687 2.71959 1.87687 3.75375C1.87687 4.78791 2.71959 5.63062 3.75375 5.63062C4.78791 5.63062 5.63062 4.78791 5.63062 3.75375C5.63062 2.71959 4.78791 1.87688 3.75375 1.87688Z'
+									></path>
+								</g>
+								<defs>
+									<clipPath id='clip0_86_5'>
+										<rect width='30' height='30' fill='white'></rect>
+									</clipPath>
+								</defs>
+							</svg>
+
+							Let's connect
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<!-- Projects Section -->
+			<div class='mt-6 sm:mt-8 md:mt-10 lg:mt-12 xl:mt-12'>
+				<ProjectsSection />
+			</div>
+
+			<!-- About Me Timeline Section with proper spacing -->
+			<div class='mt-0'>
+				<AboutMeTimeline />
+			</div>
+		</div>
+	</main>
+</Layout>
