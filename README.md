@@ -52,7 +52,7 @@ description: "Short summary for social and SEO"
 pubDate: 2025-08-09
 updatedDate: 2025-08-10
 tags: [astro, blog]
-heroImage: "../assets/blog-placeholder-1.jpg" # optional
+heroImage: "../assets/web-preview.png" # optional
 ---
 
 Your content here...
