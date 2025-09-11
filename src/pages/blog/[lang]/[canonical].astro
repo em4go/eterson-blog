@@ -32,7 +32,8 @@ export async function getStaticPaths() {
 			const next =
 				idx >= 0 && idx < sameLang.length - 1 ? sameLang[idx + 1] : null;
 
-			const alternates = arr
+			// Create a copy of arr before sorting to avoid modifying the original array
+			const alternates = [...arr]
 				.sort((a, b) =>
 					(a.data.lang ?? 'en').localeCompare(b.data.lang ?? 'en')
 				)
