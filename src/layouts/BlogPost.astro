@@ -107,17 +107,61 @@ const {
 			</div>
 
 			<script>
+				// Function to style images based on HTML comments
+				function styleImages(): void {
+					const postContent = document.querySelector('.post-content');
+					if (!postContent) return;
+
+					// Find all HTML comments and the images that follow them
+					const walker = document.createTreeWalker(
+						postContent,
+						NodeFilter.SHOW_COMMENT | NodeFilter.SHOW_ELEMENT
+					);
+
+					let node: Node | null;
+					let pendingClasses: string[] = [];
+
+					while ((node = walker.nextNode())) {
+						if (node.nodeType === Node.COMMENT_NODE) {
+							const comment = node.textContent?.trim() || '';
+
+							// Parse image styling comments
+							if (comment.includes('img-')) {
+								pendingClasses = comment
+									.split(/\s+/)
+									.filter((cls) => cls.startsWith('img-'));
+							}
+						} else if (
+							node.nodeType === Node.ELEMENT_NODE &&
+							(node as Element).tagName === 'IMG'
+						) {
+							// Apply pending classes to this image
+							if (pendingClasses.length > 0) {
+								pendingClasses.forEach((cls) => {
+									(node as HTMLElement).classList.add(cls);
+								});
+								pendingClasses = []; // Clear after applying
+							}
+						}
+					}
+				}
+
 				// Function to add copy buttons and language labels to code blocks
 				function enhanceCodeBlocks(): void {
-					const preBlocks = document.querySelectorAll<HTMLElement>('.post-content pre');
-					
+					const preBlocks =
+						document.querySelectorAll<HTMLElement>('.post-content pre');
+
 					preBlocks.forEach((preEl: HTMLElement) => {
 						const pre: HTMLElement = preEl;
 						const codeBlock: HTMLElement | null = pre.querySelector('code');
 						if (!pre || !pre.parentNode) return;
 
 						// Skip if already enhanced
-						if (pre.parentElement && pre.parentElement.classList.contains('code-block-wrapper')) return;
+						if (
+							pre.parentElement &&
+							pre.parentElement.classList.contains('code-block-wrapper')
+						)
+							return;
 
 						// Create wrapper
 						const wrapper = document.createElement('div');
@@ -125,34 +169,49 @@ const {
 						(wrapper.style as any).display = 'block';
 
 						// Get language from various possible sources
-						function detectLanguage(preEl: HTMLElement, codeEl: HTMLElement | null): string {
+						function detectLanguage(
+							preEl: HTMLElement,
+							codeEl: HTMLElement | null
+						): string {
 							// 1) data attributes commonly used by highlighters (Shiki, Prism, etc.)
 							const dataCandidates = [
 								(codeEl && codeEl.getAttribute('data-language')) || null,
 								(codeEl && codeEl.getAttribute('data-lang')) || null,
 								preEl.getAttribute('data-language'),
-								preEl.getAttribute('data-lang')
+								preEl.getAttribute('data-lang'),
 							].filter(Boolean);
 
-							if (dataCandidates.length > 0) return String(dataCandidates[0] ?? '');
+							if (dataCandidates.length > 0)
+								return String(dataCandidates[0] ?? '');
 
 							// 2) class names like language-xxx or lang-xxx on code or pre
 							const classes: string[] = [
 								...(codeEl ? Array.from(codeEl.classList) : []),
-								...Array.from(preEl.classList)
+								...Array.from(preEl.classList),
 							] as unknown as string[];
-							const cls = classes.find((c: string) => (c && (c.startsWith('language-') || c.startsWith('lang-'))));
-							if (cls) return cls.replace(/^language-/, '').replace(/^lang-/, '');
+							const cls = classes.find(
+								(c: string) =>
+									c && (c.startsWith('language-') || c.startsWith('lang-'))
+							);
+							if (cls)
+								return cls.replace(/^language-/, '').replace(/^lang-/, '');
 
 							// 3) fallback: try to infer from code fence info preserved in title attribute (rare)
-							const titleAttr = (codeEl && codeEl.getAttribute('title')) || preEl.getAttribute('title');
+							const titleAttr =
+								(codeEl && codeEl.getAttribute('title')) ||
+								preEl.getAttribute('title');
 							if (titleAttr) return String(titleAttr);
 
 							return '';
 						}
 
 						const language = detectLanguage(pre, codeBlock);
-						try { console.debug('[codeblock] detected language:', language, { classes: pre.className, codeClasses: codeBlock?.className }); } catch {}
+						try {
+							console.debug('[codeblock] detected language:', language, {
+								classes: pre.className,
+								codeClasses: codeBlock?.className,
+							});
+						} catch {}
 
 						// Prepare language label (append inside <pre> so it's within the code box)
 						const label = document.createElement('span');
@@ -172,7 +231,10 @@ const {
 
 						// Copy functionality
 						copyButton.addEventListener('click', async () => {
-							const codeText = (codeBlock && codeBlock.textContent) ? codeBlock.textContent : (pre.textContent || '');
+							const codeText =
+								codeBlock && codeBlock.textContent
+									? codeBlock.textContent
+									: pre.textContent || '';
 							try {
 								await navigator.clipboard.writeText(codeText);
 								copyButton.classList.add('copied');
@@ -181,7 +243,7 @@ const {
 										<polyline points="20 6 9 17 4 12"></polyline>
 									</svg>
 								`;
-								
+
 								setTimeout(() => {
 									copyButton.classList.remove('copied');
 									copyButton.innerHTML = `
@@ -210,13 +272,20 @@ const {
 
 				// Run when DOM is ready
 				if (document.readyState === 'loading') {
-					document.addEventListener('DOMContentLoaded', enhanceCodeBlocks);
+					document.addEventListener('DOMContentLoaded', () => {
+						styleImages();
+						enhanceCodeBlocks();
+					});
 				} else {
+					styleImages();
 					enhanceCodeBlocks();
 				}
 
 				// Also run after Astro view transitions
-				document.addEventListener('astro:after-swap', enhanceCodeBlocks);
+				document.addEventListener('astro:after-swap', () => {
+					styleImages();
+					enhanceCodeBlocks();
+				});
 			</script>
 
 			<nav
@@ -375,7 +444,9 @@ const {
 			letter-spacing: 0.05em;
 			z-index: 30;
 			pointer-events: none;
-			box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.35), 0 2px 6px rgba(0, 0, 0, 0.25);
+			box-shadow:
+				0 0 0 1px rgba(34, 211, 238, 0.35),
+				0 2px 6px rgba(0, 0, 0, 0.25);
 		}
 
 		/* Copy button */
@@ -394,7 +465,11 @@ const {
 			border: 1px solid transparent; /* no visible border by default */
 			color: #e9d5ff;
 			cursor: pointer;
-			transition: background 0.15s ease, border-color 0.15s ease, transform 0.05s ease, opacity 0.15s ease;
+			transition:
+				background 0.15s ease,
+				border-color 0.15s ease,
+				transform 0.05s ease,
+				opacity 0.15s ease;
 			z-index: 40; /* above code text */
 			opacity: 0.9;
 			appearance: none;
@@ -461,6 +536,40 @@ const {
 		.post-content img {
 			border-radius: 2px;
 			box-shadow: 8px 8px 0 0 rgba(124, 58, 237, 0.35);
+		}
+
+		/* Image styling classes */
+		.post-content .img-center {
+			display: block;
+			margin: 1.5rem auto;
+		}
+
+		.post-content .img-xsmall {
+			max-width: 200px;
+			width: 100%;
+		}
+
+		.post-content .img-small {
+			max-width: 400px;
+			width: 100%;
+		}
+
+		.post-content .img-medium {
+			max-width: 600px;
+			width: 100%;
+		}
+
+		.post-content .img-large {
+			max-width: 800px;
+			width: 100%;
+		}
+
+		.post-content .img-no-shadow {
+			box-shadow: none;
+		}
+
+		.post-content .img-rounded {
+			border-radius: 8px;
 		}
 	</style>
 </Layout>
