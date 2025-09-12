@@ -107,6 +107,57 @@ const {
 			</div>
 
 			<script>
+				// Function to add target="_blank" to external links
+				function addExternalLinkAttributes(): void {
+					const postContent = document.querySelector('.post-content');
+					if (!postContent) return;
+					
+					// Get all links in the post content
+					const links = postContent.querySelectorAll('a[href]');
+					
+					// Add target="_blank" and rel="noopener" to external links
+					links.forEach((link) => {
+						const href = link.getAttribute('href');
+						if (!href) return;
+						
+						// Skip relative links and anchor links
+						if (href.startsWith('/') || href.startsWith('#')) return;
+						
+						// Skip protocol-relative links (//example.com)
+						if (href.startsWith('//')) {
+							link.setAttribute('target', '_blank');
+							link.setAttribute('rel', 'noopener');
+							return;
+						}
+						
+						// Check if it's an external link
+						if (href.startsWith('http://') || href.startsWith('https://')) {
+							try {
+								const url = new URL(href);
+								const currentDomain = window.location.hostname;
+								if (url.hostname !== currentDomain) {
+									link.setAttribute('target', '_blank');
+									link.setAttribute('rel', 'noopener');
+								}
+							} catch {
+								// If URL parsing fails, treat as external for safety
+								link.setAttribute('target', '_blank');
+								link.setAttribute('rel', 'noopener');
+							}
+						}
+					});
+				}
+
+				// Run the function to add external link attributes
+				if (document.readyState === 'loading') {
+					document.addEventListener('DOMContentLoaded', addExternalLinkAttributes);
+				} else {
+					addExternalLinkAttributes();
+				}
+				
+				// Also run after Astro view transitions
+				document.addEventListener('astro:after-swap', addExternalLinkAttributes);
+
 				// Function to style images based on HTML comments
 				function styleImages(): void {
 					const postContent = document.querySelector('.post-content');
